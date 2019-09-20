@@ -1,5 +1,6 @@
 import click
 
+from tgcli.cli.bot.receive import receive
 from tgcli.cli.bot.send import send
 
 
@@ -18,3 +19,4 @@ def bot(ctx, token):
 
 
 bot.add_command(send)
+bot.add_command(receive)

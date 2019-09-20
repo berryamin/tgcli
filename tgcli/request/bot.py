@@ -132,19 +132,12 @@ class GetUpdatesRequest(BotRequest):
     def __init__(
         self,
         session,
-        chat_id: typing.Union[str, int],
         limit: int = 1,
         allowed_updates: typing.List[UpdateType] = [UpdateType.MESSAGE],
     ):
-        try:
-            chat_id = int(chat_id)
-        except ValueError:  # pragma: no cover
-            pass  # pragma: no cover
-
         super().__init__(session, "getUpdates")
         self.prepare_method("post")
         payload = {
-            "chat_id": chat_id,
             "limit": limit,
             "allowed_updates": list(map(lambda o: o.value, allowed_updates))
         }
