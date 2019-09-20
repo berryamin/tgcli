@@ -33,8 +33,7 @@ class BotRequest(requests.PreparedRequest):
     def prepare_url(self, url, params):
         super(BotRequest, self).prepare_url(
             "{base_url}{method_name}".format(
-                base_url=self.__session.base_url,
-                method_name=self.__method_name,
+                base_url=self.__session.base_url, method_name=self.__method_name
             ),
             params,
         )
@@ -119,6 +118,35 @@ class SendLocationRequest(BotRequest):
             "latitude": float(latitude),
             "longitude": float(longitude),
             "disable_notification": bool(disable_notification),
+        }
+        self.prepare_body(data=None, files=None, json=payload)
+
+
+class UpdateType(enum.Enum):
+    MESSAGE = "message"
+    EDITED_CHANNEL_POST = "edited_channel_post"  # implement later on
+    CALLBACK_QUERY = "callback_query"
+
+
+class GetUpdatesRequest(BotRequest):
+    def __init__(
+        self,
+        session,
+        chat_id: typing.Union[str, int],
+        limit: int = 1,
+        allowed_updates: typing.List[UpdateType] = [UpdateType.MESSAGE],
+    ):
+        try:
+            chat_id = int(chat_id)
+        except ValueError:  # pragma: no cover
+            pass  # pragma: no cover
+
+        super().__init__(session, "getUpdates")
+        self.prepare_method("post")
+        payload = {
+            "chat_id": chat_id,
+            "limit": limit,
+            "allowed_updates": list(map(lambda o: o.value, allowed_updates))
         }
         self.prepare_body(data=None, files=None, json=payload)
 

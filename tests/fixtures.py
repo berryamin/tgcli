@@ -152,6 +152,23 @@ def bot_send_location_request(
 
 
 @pytest.fixture
+def bot_get_updates_request(bot_session) -> tgcli.request.bot.GetUpdatesRequest:
+    """
+    Returns a bot get updates request.
+
+    Fixtures
+    --------
+    bot_session
+
+    Attributes
+    ----------
+    session = bot_session
+    chat_id = 1
+    """
+    return tgcli.request.bot.GetUpdatesRequest(bot_session, 1)
+
+
+@pytest.fixture
 def bot_send_document_request(
     request, bot_session, file_factory
 ) -> tgcli.request.bot.SendDocumentRequest:

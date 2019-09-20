@@ -169,6 +169,19 @@ class TestSendMessageRequest:
         assert request_body.get("parse_mode") == "Markdown"
 
 
+class TestGetUpdatesRequest:
+    def test_url(self, bot_get_updates_request):
+        assert bot_get_updates_request.url[-10:] == "getUpdates"
+    
+    def test_request_body_chat_id(self, bot_get_updates_request, request_body_factory):
+        request_body = request_body_factory(bot_get_updates_request)
+        assert request_body.get("chat_id") == 1
+    
+    def test_request_body_limit(self, bot_get_updates_request, request_body_factory):
+        request_body = request_body_factory(bot_get_updates_request)
+        assert request_body.get("limit") == 1
+
+
 class TestSendDocumentRequest(BaseSendFileTest):
     fixture_name = "bot_send_document_request"
 
